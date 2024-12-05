@@ -27,6 +27,7 @@ public class View implements ModelListener {
     private final Label nombreBatimentsLabel;
     private final Label placesLabel;
     private final Label dayLabel;
+    private final Label specialEventLabel;
     private final Map<String, Button> Buttons = new HashMap<>();
     private final VBox vBox;
     private final ToggleGroup group;
@@ -50,6 +51,12 @@ public class View implements ModelListener {
         dayLabel.setFont(new Font("Arial", 24));
         VBox.setMargin(dayLabel, new Insets(0, 32, 16, 32));
         vBox.getChildren().add(dayLabel);
+
+        specialEventLabel = new Label();
+        specialEventLabel.setText("\n");
+        specialEventLabel.setFont(new Font("Arial", 24));
+        VBox.setMargin(specialEventLabel, new Insets(0, 32, 16, 32));
+        vBox.getChildren().add(specialEventLabel);
 
         nombreBatimentsLabel = new Label();
         nombreBatimentsLabel.setText("Nombre de batiments : 0");
@@ -91,6 +98,9 @@ public class View implements ModelListener {
     public void update(GameManager gameManager) {
         label.setText("Ressources : $" + gameManager.getRessources());
         dayLabel.setText("Jour : " + gameManager.getDay());
+        if (gameManager.getDay() % 30 == 0) {
+            specialEventLabel.setText("Bonus mensuel : + $200 !");
+        } else {specialEventLabel.setText("");}
         List<Event> availableEvents = gameManager.getAvailableEvents();
         for (Event event : Event.values()) {
             Buttons.get(event.getId()).setDisable(true);

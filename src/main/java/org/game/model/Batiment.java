@@ -2,48 +2,56 @@ package org.game.model;
 
 import javafx.concurrent.Task;
 
+import java.util.AbstractMap;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 public class Batiment implements Achetable {
-    private final int price = 100;
-    private final int constructionTime = 30;
-    private int placesRestantes;
-    private int placesTotales;
-    private int rendement;
+    protected HashMap<String, Integer> price;
+    protected int constructionTime;
+    protected int placesRestantes;
+    protected int placesTotales;
+    protected HashMap<String, Integer> rendement;
+    protected HashMap<String, Integer> besoins;
 
-    private Task<Void> batimentTask;
-    private Thread batimentThread;  // Thread pour exécuter la Task
-
-    public Batiment(){
-        placesRestantes = 3;
-        placesTotales = 3;
-        rendement = 5;
+    public Batiment(HashMap<String, Integer> _price, int _constructionTime, int _placesTotales, HashMap<String, Integer> _rendement, HashMap<String, Integer> _besoins){
+        price = _price;
+        constructionTime = _constructionTime;
+        placesRestantes = _placesTotales;
+        placesTotales = _placesTotales;
+        rendement = _rendement;
+        besoins = _besoins;
     }
 
-    public int getPrice(){return price;}
-    public int getRendement(){return rendement;}
+
+    @Override
+    public HashMap<String, Integer> getPrice(){return price;}
+    @Override
+    public HashMap<String, Integer> getRendement(){return rendement;}
+    @Override
+    public HashMap<String, Integer> getConsommation() {return besoins;}
+    @Override
     public int getConstructionTime(){return constructionTime;}
     public int getPlacesRestantes(){return placesRestantes;}
     public void setPlacesRestantes(int newPlacesRestantes){placesRestantes = newPlacesRestantes;}
     @Override
     public void construire(GameManager gameManager, Model model){
-        gameManager.setRessources(gameManager.getRessources() - price);
-        startBatimentTask(gameManager);
+        List<String> keys = new ArrayList<>(price.keySet());
+        gameManager.getRessources().forEach(r -> {keys.forEach(k -> {
+            if(r.getName().equals(k)){
+                r.setQuantity(r.getQuantity() - price.get(k));
+            }
+        });});
         model.update();
     }
 
-    private void startBatimentTask(GameManager gameManager) {
-        batimentTask = new Task<>() {
-            @Override
-            protected Void call() throws Exception {
-                while (!isCancelled()) {
-                    gameManager.setRessources(gameManager.getRessources() + (placesTotales - placesRestantes) * rendement);
-                    Thread.sleep(1000);
-                }
-                return null;
-            }
-        };
+    public void produire_consommerRessources(GameManager gameManager){
+        int production = (placesTotales - placesRestantes) * rendement;
+        int consommation = (placesTotales - placesRestantes) * besoins;
+        int gainFinal = production - consommation;
 
-        batimentThread = new Thread(batimentTask);
-        batimentThread.setDaemon(true); // Le thread s'arrête lorsque l'application se termine
-        batimentThread.start();
+        gameManager.setRessources(gameManager.getRessources() + gainFinal);
     }
+
 }

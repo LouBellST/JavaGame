@@ -2,11 +2,11 @@ package org.game.model;
 
 import org.game.controller.Command;
 
-public class AcheterBatimentCommand implements Command {
+public class AcheterWoodenCabinCommand implements Command {
 
     @Override
     public void exec(Model model) {
-        model.setNextEvent(Event.ACHETER_BATIMENT);
+        model.setNextEvent(Event.ACHETER_WOODENCABIN);
     }
 
     @Override

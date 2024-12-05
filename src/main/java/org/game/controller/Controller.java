@@ -3,7 +3,7 @@ package org.game.controller;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.stage.Stage;
-import org.game.model.AcheterBatimentCommand;
+import org.game.model.AcheterWoodenCabinCommand;
 import org.game.model.AcheterHabitantCommand;
 import org.game.model.Event;
 import org.game.model.Model;
@@ -21,7 +21,7 @@ public class Controller implements ViewListener {
         view = new View(stage);
         bagOfCommands = new BagOfCommands(model);
         for (Event event : Event.values()) {
-            view.addButton(event.getText() + " : $" + event.getEventClass().getPrice() + (event.getId().equals("2") ? "" : "   ( Rendement =  $" + event.getEventClass().getRendement() + "/jour * habitants )"),
+            view.addButton(event.getText() + " : $" + event.getEventClass().getPrice() + (event.getId().equals("2") ? "" : "   ( Rendement =  $" + event.getEventClass().getRendement() + "/habitant  |  Consommation =  $" + event.getEventClass().getConsommation() + "/habitant )"),
                     event.getId(), geteventHandlerByEvent(event));
         }
         model.setListener(view);
@@ -29,14 +29,12 @@ public class Controller implements ViewListener {
     }
 
     @Override
-    public void acheterBatimentClicked() {
-        System.out.println("Le bouton 'Acheter Batiment' a été cliqué.");
-        bagOfCommands.add(new AcheterBatimentCommand());
+    public void acheterWoodenCabinClicked() {
+        bagOfCommands.add(new AcheterWoodenCabinCommand());
     }
 
     @Override
     public void acheterHabitantClicked() {
-        System.out.println("Le bouton 'Acheter Habitant' a été cliqué.");
         bagOfCommands.add(new AcheterHabitantCommand());
     }
 
@@ -45,8 +43,8 @@ public class Controller implements ViewListener {
      */
     private EventHandler<ActionEvent> geteventHandlerByEvent(Event event) {
         return switch (event) {
-            case ACHETER_BATIMENT ->
-                    a -> acheterBatimentClicked();
+            case ACHETER_WOODENCABIN ->
+                    a -> acheterWoodenCabinClicked();
             case ACHETER_HABITANT ->
                     a -> acheterHabitantClicked();
         };

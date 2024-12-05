@@ -2,7 +2,7 @@ package org.game.model;
 
 public enum Event {
 
-    ACHETER_BATIMENT("Acheter un batiment", "1",  new Batiment()),
+    ACHETER_WOODENCABIN("Acheter une wooden cabin", "1", (new CreatorWoodenCabin()).createBatiment()),
     ACHETER_HABITANT("Acheter un habitant", "2", new Habitant());
 
 

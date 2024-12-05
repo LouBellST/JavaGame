@@ -33,11 +33,7 @@ public class BagOfCommands {
                         Command command = commands.poll();
                         System.err.printf("On traite la commande %s\n", command);
                         command.exec(model);
-                    } else {
-                        System.err.println("Plus de commandes à traiter");
-
                     }
-
                     Thread.sleep(100);
                 }
                 return null;
