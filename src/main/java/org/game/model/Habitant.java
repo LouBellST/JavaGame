@@ -6,6 +6,7 @@ public class Habitant implements Achetable{
 
     public int getPrice(){return price;}
     public int getConstructionTime(){return constructionTime;}
+    public int getRendement(){return 1;}
 
     @Override
     public void construire(GameManager gameManager, Model model){

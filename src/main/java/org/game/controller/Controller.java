@@ -21,7 +21,8 @@ public class Controller implements ViewListener {
         view = new View(stage);
         bagOfCommands = new BagOfCommands(model);
         for (Event event : Event.values()) {
-            view.addButton(event.getText(), event.getId(), geteventHandlerByEvent(event));
+            view.addButton(event.getText() + " : $" + event.getEventClass().getPrice() + (event.getId().equals("2") ? "" : "   ( Rendement =  $" + event.getEventClass().getRendement() + "/jour * habitants )"),
+                    event.getId(), geteventHandlerByEvent(event));
         }
         model.setListener(view);
         model.update();

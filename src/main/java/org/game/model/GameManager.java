@@ -1,6 +1,8 @@
 package org.game.model;
 
 
+import javafx.concurrent.Task;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,13 +12,18 @@ public class GameManager {
     private List<Achetable> currentActions;
     private List<Batiment> allBatiments;
     private List<Habitant> currentBuildings;
-
     private int ressources;
+    private int day;
+    private Task<Void> dayTask;
+    private Thread dayThread;  // Thread pour tenir compte des jours
+
 
     public GameManager(){
         currentActions = new ArrayList<>();
         allBatiments = new ArrayList<>();
         ressources = 200;
+        day = 1;
+        startDayTask();
     }
     public void handle(Model model) {
         switch (model.getNextEvent()) {
@@ -36,6 +43,23 @@ public class GameManager {
         }
     }
 
+    private void startDayTask() {
+        dayTask = new Task<>() {
+            @Override
+            protected Void call() throws Exception {
+                while (!isCancelled()) {
+                    Thread.sleep(5000);
+                    day += 1;
+                }
+                return null;
+            }
+        };
+
+        dayThread = new Thread(dayTask);
+        dayThread.setDaemon(true); // Le thread s'arrête lorsque l'application se termine
+        dayThread.start();
+    }
+
     public List<Achetable> getCurrentActions() {
         return currentActions;
     }
@@ -47,7 +71,7 @@ public class GameManager {
     }
 
     public List<Batiment> getAllBatiments(){return allBatiments;}
-
+    public int getDay(){return day;}
 
     public List<Event> getAvailableEvents() {
         List<Event> availableEvents = new ArrayList<>();

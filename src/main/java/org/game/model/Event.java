@@ -2,16 +2,18 @@ package org.game.model;
 
 public enum Event {
 
-    ACHETER_BATIMENT("Acheter un batiment", "1"),
-    ACHETER_HABITANT("Acheter un habitant", "2");
+    ACHETER_BATIMENT("Acheter un batiment", "1",  new Batiment()),
+    ACHETER_HABITANT("Acheter un habitant", "2", new Habitant());
 
 
     private final String text;
     private final String id;
+    private final Achetable eventClass;
 
-    Event(String text, String id) {
+    Event(String text, String id, Achetable eventClass) {
         this.text = text;
         this.id = id;
+        this.eventClass = eventClass;
     }
 
     public String getText() {
@@ -20,6 +22,9 @@ public enum Event {
 
     public String getId() {
         return id;
+    }
+    public Achetable getEventClass() {
+        return eventClass;
     }
 
     public static Event eventById(String id) {

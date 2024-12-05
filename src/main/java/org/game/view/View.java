@@ -26,6 +26,7 @@ public class View implements ModelListener {
     private final Label label;
     private final Label nombreBatimentsLabel;
     private final Label placesLabel;
+    private final Label dayLabel;
     private final Map<String, Button> Buttons = new HashMap<>();
     private final VBox vBox;
     private final ToggleGroup group;
@@ -39,21 +40,27 @@ public class View implements ModelListener {
         vBox.setSpacing(8);
 
         label = new Label();
-        label.setText("Ressources : 200\n");
+        label.setText("Ressources : $200\n");
         label.setFont(new Font("Arial", 24));
         VBox.setMargin(label, new Insets(0, 0, 16, 32));
         vBox.getChildren().add(label);
 
+        dayLabel = new Label();
+        dayLabel.setText("Jour : 1\n");
+        dayLabel.setFont(new Font("Arial", 24));
+        VBox.setMargin(dayLabel, new Insets(0, 32, 16, 32));
+        vBox.getChildren().add(dayLabel);
+
         nombreBatimentsLabel = new Label();
         nombreBatimentsLabel.setText("Nombre de batiments : 0");
         nombreBatimentsLabel.setFont(new Font("Arial", 24));
-        VBox.setMargin(nombreBatimentsLabel, new Insets(0, 0, 16, 32));
+        VBox.setMargin(nombreBatimentsLabel, new Insets(0, 32, 16, 32));
         vBox.getChildren().add(nombreBatimentsLabel);
 
         placesLabel = new Label();
         placesLabel.setText("Nombre de places total restant : 0");
         placesLabel.setFont(new Font("Arial", 24));
-        VBox.setMargin(placesLabel, new Insets(0, 0, 16, 32));
+        VBox.setMargin(placesLabel, new Insets(0, 32, 16, 32));
         vBox.getChildren().add(placesLabel);
 
         group = new ToggleGroup();
@@ -71,7 +78,7 @@ public class View implements ModelListener {
         radioButton.setMaxWidth(Double.MAX_VALUE);
         radioButton.setMaxHeight(Double.MAX_VALUE);
         radioButton.setOnAction(eventHandler);
-        VBox.setMargin(radioButton, new Insets(0, 0, 0, 32));
+        VBox.setMargin(radioButton, new Insets(8, 32, 0, 32));
         vBox.getChildren().add(radioButton);
     }
 
@@ -82,7 +89,8 @@ public class View implements ModelListener {
 
     @Override
     public void update(GameManager gameManager) {
-        label.setText("Ressources : " + gameManager.getRessources());
+        label.setText("Ressources : $" + gameManager.getRessources());
+        dayLabel.setText("Jour : " + gameManager.getDay());
         List<Event> availableEvents = gameManager.getAvailableEvents();
         for (Event event : Event.values()) {
             Buttons.get(event.getId()).setDisable(true);
